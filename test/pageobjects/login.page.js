@@ -1,4 +1,4 @@
-const { $ } = require('@wdio/globals');
+const { $, browser } = require('@wdio/globals');
 const Page = require('./page');
 const { Key } = require('webdriverio');
 
@@ -30,7 +30,7 @@ class LoginPage extends Page {
     }
 
     get btnSignIn() {
-        return $('//*[text()="Sign In"]');
+        return $('//*[contains(text(),"Sign In")]');
     }
 
     
@@ -92,83 +92,18 @@ class LoginPage extends Page {
      * e.g., to login using username and password
      */
     async login(username, password) {
-        // Enable accessibility before interacting with elements
+        // Enabling accessibility before interacting with elements
         await this.enableAccessibility();
-        
-        // await browser.execute((el) => el.click(), this.btnSignIn);
-        
-        await this.btnSignIn.click();
 
-        // Interact with the username and password fields
+        await this.btnSignIn.click();
         await this.inputUsername.setValue(username);
         await browser.keys(Key.Tab);
-        // await this.visiblePassword.click();
-        // await browser.execute((el) => el.click(), this.visiblePassword);
-        // await browser.pause(3000);
-        // await this.inputPassword.setValue(password);
         await browser.keys(password.split(''));
-
-
-        // await browser.execute((selector, value) => {
-        //     const element = document.querySelector(selector);
-        //     if (element) {
-        //         element.value = value; // Set the value
-        //         element.dispatchEvent(new Event('input', { bubbles: true })); // Trigger input event
-        //     }
-        // }, passwordInp, password);
-
-        // await browser.execute(function() {
-        //     const passwordField = document.querySelector('#current-password');
-        //     if (passwordField) {
-        //         passwordField.value = 'Aarunraj@123';
-        //         passwordField.dispatchEvent(new Event('input', { bubbles: true }));
-        //     }
-        // });
-
-        // const passwordField = await $('#current-password');
-        // await passwordField.waitForDisplayed({ timeout: 5000 });  // Wait for 5 seconds
-
-        // // Set the value for the password field
-        // await passwordField.setValue('Aarunraj@123');
-
-        // browser.execute(function() {
-        //     var passwordField = document.getElementById('current-password');
-        //     passwordField.style.top = '0px'; // Or another valid position to make it visible
-        //     passwordField.value = 'yourPassword';
-        //   });
-
-
-        // await browser.execute((el, value) => {
-        //     if (el instanceof HTMLElement) { // Check if it's a DOM element
-        //         el.value = value; // Set the value
-        //         el.dispatchEvent(new Event('input', { bubbles: true })); // Trigger input event
-        //     } else {
-        //         throw new Error("Element is not a valid DOM node");
-        //     }
-        // }, this.inputPassword, password);
-
-        // const passwordElement = await $('//input[@aria-label="Password"]');
-
-        // // Get element ID    or backend node
-        // const elementId = await passwordElement.elementId;
-
-        // // Use the element ID in the execute function
-        // await browser.execute((elementId, value) => {
-        //     const el = window.__webdriverio_elements[elementId]; // WebDriverIO stores elements in the browser context
-        //     if (el instanceof HTMLElement) {
-        //         el.value = value;
-        //         el.dispatchEvent(new Event('input', { bubbles: true }));
-        //     } else {
-        //         throw new Error("Invalid DOM node");
-        //     }
-        // }, elementId, password);
-
-
-        await browser.pause(7000);
         await this.btnSignIn.click();
-
+        await browser.pause(2000);
+        await browser.takeScreenshot();
         await this.btnProfile.click();
-
+        
         //signinwith google
         // await this.btnSignInWithGoogle.click();
         // // await this.btnUseAnotherAccount.click();

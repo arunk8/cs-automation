@@ -5,7 +5,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "spec": "npx wdio run ./wdio.conf.js --spec",
-    "wdio": "wdio run ./wdio.conf.js"
+    "wdio": "wdio run ./wdio.conf.js",
+    "report": "allure generate allure-results --clean && allure open"
   },
   "keywords": [],
   "author": "",

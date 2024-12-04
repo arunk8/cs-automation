@@ -1,13 +1,15 @@
-
+const allure = require('@wdio/allure-reporter').default;
 class logger {
     async info(message) {
         var msg = await this.getTimeStamp() + " [INFO] : " + message;
         console.log(msg);
+        allure.addAttachment('Log Details', msg, 'text/plain');
     }
 
     async error(message) {
         var msg = await this.getTimeStamp() + " [ERROR] : " + message;
         console.log(msg);
+        allure.addAttachment('Log Details', msg, 'text/plain');
     }
 
     async warn(message) {

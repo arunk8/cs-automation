@@ -63,6 +63,7 @@ class webActionsAPI {
      */
     async takeScreenshot(fileName) {
         try {
+            await browser.takeScreenshot(fileName);
             await browser.saveScreenshot(`./screenshots/${fileName}.png`);
             await this.log.info(`Screenshot taken and saved as ${fileName}.png`);
         } catch (error) {
@@ -78,11 +79,11 @@ class webActionsAPI {
      * @example webActionsAPI.click("#element", 10000);
      */
     async click(locator, maxtimeout = 10000) {
-        await this.log.info(`Clicking on the element: ${locator}`);
-        const element = await $(locator);
+        await this.log.info(`Clicking on the element: ${typeof locator === 'string' ? locator : 'provided element'}`);
+        const element = typeof locator === 'string' ? await $(locator) : locator;
         await element.waitForClickable({ timeout: maxtimeout });
         await element.click();
-        await this.log.info(`Clicked on the element: ${locator}`);
+        await this.log.info(`Clicked on the element: ${typeof locator === 'string' ? locator : 'provided element'}`);
         await this.waitForPageToLoad();
     }
 
@@ -680,9 +681,9 @@ class webActionsAPI {
      */
     async waitForElementToBeVisible(locator, timeout = 5000) {
         try {
-            const element = await $(locator);
+            const element = typeof locator === 'string' ? await $(locator) : locator;
             const isVisible = await element.waitForDisplayed({ timeout });
-            await this.log.info(`Element ${locator} is visible: ${isVisible}`);
+            await this.log.info(`Element ${typeof locator === 'string' ? locator : 'provided element'} is visible: ${isVisible}`);
             return isVisible;
         } catch (error) {
             await this.log.error(`Failed to wait for element to be visible: ${error.message}`);

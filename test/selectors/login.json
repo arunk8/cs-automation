@@ -1,0 +1,11 @@
+{
+  "pageUrl": "/login",
+  "username": "//input[@id='username']",
+  "password": "//input[@id='password']",
+  "loginButton": "//button[@id='submitButton']",
+  "error": "//div[@id='error-id']",
+  "adminHomePage" : "//div[@class='h1-header' and contains(.,'Admin Home')]",
+  "errorPasswordRequired": "//p[@class='message red-gradient' and contains(.,'Please fill in your password')]",
+  "errorInvalidLogin" : "//p[@class='message red-gradient' and contains(.,'Unable to login due to Bad credentials')]",
+  "loadingPanel": "//div[@id='loading-id']"
+}

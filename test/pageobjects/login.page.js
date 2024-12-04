@@ -1,6 +1,7 @@
 const { $, browser } = require('@wdio/globals');
-const Page = require('./page');
+const Page = require('./Page.js');
 const { Key } = require('webdriverio');
+const { waitForFinish } = require('testable-utils');
 
 /**
  * Sub page containing specific selectors and methods for a specific page
@@ -17,22 +18,18 @@ class LoginPage extends Page {
     get inputUsername() {
         return $('//input[@aria-label="Email"]');
     }
-
     get visiblePassword() {
         return $('//*[@id="flt-semantic-node-14"]');
     }
     get inputPassword() {
         return $('//flt-text-editing-host//form[4]//*[@id="current-password"]');
     }
-
     get btnSubmit() {
         return $('button[type="submit"]');
     }
-
     get btnSignIn() {
         return $('//*[contains(text(),"Sign In")]');
     }
-
     
     // get btnSignInWithGoogle() {
     //     return $('//*[text()="Sign in with Google"]');
@@ -56,13 +53,36 @@ class LoginPage extends Page {
     //     return $('//*[text()="Continue"]');
     // }
     
-    
     get btnProfile(){
         return $('//span[text()="Profile"]');
     }
-    
-    
-
+    get btnCareerPlanning(){
+        return $('//*[text()="Career Planning"]');
+    }
+    get btnReferAndEarn(){
+        return $('//*[text()="Refer and Earn"]');
+    }
+    get btnSearch(){
+        return $('//*[text()="Search"]');
+    }
+    get btnBlog(){
+        return $('//*[text()="Search"]/following-sibling::flt-semantics[text()="Blog"]');
+    }
+    get btnActivityFeed(){
+        return $('//span[text()="Activity Feed"]');
+    }
+    get btnJobs(){
+        return $('//span[text()="Jobs"]');
+    }
+    get btnNotifications(){
+        return $('//span[text()="Notifications"]');
+    }
+    get btnForBussinesses(){
+        return $('//span[text()="For Businesses"]');
+    }
+    get btnSignout(){
+        return $('//*[text()="Sign out"]');
+    }
     get hiddenAccessibilityButton() {
         // Selector for the hidden button enabling accessibility
         return $('flt-semantics-placeholder');
@@ -79,12 +99,8 @@ class LoginPage extends Page {
         const accessibilityButton = await this.hiddenAccessibilityButton;
         await accessibilityButton.waitForExist({ timeout: 5000 });
 
-        // Click the hidden button to enable accessibility
-        // await accessibilityButton.click();
         await browser.execute((el) => el.click(), accessibilityButton);
         console.log('Accessibility enabled');
-
-        await browser.pause(3000);
     }
 
     /**
@@ -95,14 +111,22 @@ class LoginPage extends Page {
         // Enabling accessibility before interacting with elements
         await this.enableAccessibility();
 
-        await this.btnSignIn.click();
-        await this.inputUsername.setValue(username);
-        await browser.keys(Key.Tab);
+        // await this.btnSignIn.click();
+        await this.action.click(this.btnSignIn);
+        await this.action.setValue(this.inputUsername,username);
+        await this.action.clickKeys("tab");
         await browser.keys(password.split(''));
-        await this.btnSignIn.click();
-        await browser.pause(2000);
+        await this.action.click(this.btnSignIn);
+        await this.action.waitForElementToBeVisible(this.btnProfile);
         await browser.takeScreenshot();
-        await this.btnProfile.click();
+
+        // await this.inputUsername.setValue(username);
+        // await browser.keys(Key.Tab);
+        // await browser.keys(password.split(''));
+        // await this.btnSignIn.click();
+        // await browser.pause(3000);
+        // await browser.takeScreenshot();
+        // await this.btnProfile.click();
         
         //signinwith google
         // await this.btnSignInWithGoogle.click();
@@ -118,11 +142,30 @@ class LoginPage extends Page {
         // await browser.pause(3000);
     }
 
-    /**
-     * Overwrite specific options to adapt it to page object
-     */
+    async validateHeaderButtons(){
+        await expect(this.btnProfile).toBeEnabled({ message: "Profile must be enabled"});
+        await expect(this.btnCareerPlanning).toBeEnabled({ message: "Career Planning must be enabled"});
+        await expect(this.btnReferAndEarn).toBeEnabled({ message: "Refer and Earn must be enabled"});
+        await expect(this.btnSearch).toBeEnabled({ message: "Search must be enabled"});
+        await expect(this.btnBlog).toBeEnabled({ message: "Blog must be enabled"});
+        await expect(this.btnActivityFeed).toBeEnabled({ message: "Activity Feed button must be enabled"});
+        await expect(this.btnJobs).toBeEnabled({ message: "Jobs button must be enabled"});
+        await expect(this.btnNotifications).toBeEnabled({ message: "Notifications button must be enabled"});
+        await expect(this.btnForBussinesses).toBeEnabled({ message: "ForBussinesses button must be enabled"});
+    }
+
+    async logout() {
+        await this.action.click(this.btnSignout);
+        await this.action.waitForElementToBeInVisible(this.btnProfile);
+        await expect(this.btnSignIn).toBeEnabled({ message: "Signout is not successfull, expected sign in button to be displayed"});
+    }
+
     open() {
         return super.open('login');
+    }
+
+    openLandingPage() {
+        return super.openLandingPage();
     }
 }
 

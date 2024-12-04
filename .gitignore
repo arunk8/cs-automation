@@ -1,0 +1,4 @@
+# ignore all files in any directory named build
+node_modules/
+allure-results/
+allure-report/

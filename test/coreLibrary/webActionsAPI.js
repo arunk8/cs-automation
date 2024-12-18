@@ -79,11 +79,13 @@ class webActionsAPI {
      * @example webActionsAPI.click("#element", 10000);
      */
     async click(locator, maxtimeout = 10000) {
-        await this.log.info(`Clicking on the element: ${typeof locator === 'string' ? locator : 'provided element'}`);
         const element = typeof locator === 'string' ? await $(locator) : locator;
+        const selector = typeof locator === 'string' ? locator : element.selector;
+    
+        await this.log.info(`Clicking on the element: ${selector}`);
         await element.waitForClickable({ timeout: maxtimeout });
         await element.click();
-        await this.log.info(`Clicked on the element: ${typeof locator === 'string' ? locator : 'provided element'}`);
+        await this.log.info(`Clicked on the element: ${selector}`);
         await this.waitForPageToLoad();
     }
 
@@ -185,9 +187,9 @@ class webActionsAPI {
      * @returns {Promise<string>} - The input field's value.
      * @example const value = await webActionsAPI.getInputData('#input');
      */
-    async getInputData(locator) {
+    async getValue(locator) {
         try {
-            const element = await $(locator);
+            const element = typeof locator === 'string' ? await $(locator) : locator;
             const value = await element.getValue();
             await this.log.info(`Retrieved input data from ${locator}: ${value}`);
             return value;
@@ -537,7 +539,7 @@ class webActionsAPI {
      */
     async scrollIntoView(locator) {
         try {
-            const element = await $(locator);
+            const element = typeof locator === 'string' ? await $(locator) : locator;
             await element.scrollIntoView();
             await this.log.info(`Scrolled to element ${locator}`);
         } catch (error) {

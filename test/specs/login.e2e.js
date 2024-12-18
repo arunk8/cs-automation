@@ -1,10 +1,11 @@
-const { expect } = require('@wdio/globals')
+const { expect, browser } = require('@wdio/globals')
 const LoginPage = require('../pageobjects/login.page')
 
 describe('CaresLink Application Login', () => {
     it('should login with valid credentials', async () => {
         await LoginPage.openLandingPage() 
         await LoginPage.login(global.envConfig.username, global.envConfig.password)
+        await browser.takeScreenshot();
     })
 
     it('should check header buttons', async () => {

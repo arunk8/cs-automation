@@ -1,0 +1,1 @@
+javascript:(function() {     const btn = document.querySelector('flt-semantics-placeholder[aria-label="Enable accessibility"]');     if (btn) {         btn.click();         console.log('Button clicked');     } else {         console.error('Button not found');     } })();

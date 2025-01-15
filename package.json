@@ -3,10 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "spec": "npx wdio run ./wdio.conf.js --spec",
     "prod": "set NODE_ENV=prod&& wdio run ./wdio.conf.js --spec",
-    "dev": "set NODE_ENV=dev&& wdio run ./wdio.conf.js --spec",
+    "test": "set NODE_ENV=test&& wdio run ./wdio.conf.js --spec",
     "wdio": "wdio run ./wdio.conf.js",
     "report": "allure generate allure-results --clean && allure open"
   },

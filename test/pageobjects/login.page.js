@@ -1,7 +1,6 @@
 const { $, browser } = require('@wdio/globals');
 const Page = require('./Page.js');
 const { Key } = require('webdriverio');
-const { waitForFinish } = require('testable-utils');
 
 /**
  * Sub page containing specific selectors and methods for a specific page
@@ -16,13 +15,15 @@ class LoginPage extends Page {
      * Define selectors using getter methods
      */
     get inputUsername() {
-        return $('//input[@aria-label="Email"]');
+        // return $('//input[@aria-label="Email"]');
+        return $('//*[@id="flt-semantic-node-14"]/input');
     }
     get visiblePassword() {
         return $('//*[@id="flt-semantic-node-14"]');
     }
     get inputPassword() {
-        return $('//flt-text-editing-host//form[4]//*[@id="current-password"]');
+        // return $('//flt-text-editing-host//form[4]//*[@id="current-password"]');
+        return $('//*[@id="flt-semantic-node-16"]/input');
     }
     get btnSubmit() {
         return $('button[type="submit"]');

@@ -1,7 +1,6 @@
 const { $, browser } = require('@wdio/globals');
 const Page = require('./Page');
 const { Key } = require('webdriverio');
-const { waitForFinish } = require('testable-utils');
 
 
 class ProfilePage extends Page {

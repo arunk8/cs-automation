@@ -1,7 +1,7 @@
 var fs = require('fs');
 var fse = require('fs-extra');
 var path = require('path');
-var XLSX = require('xlsx');
+// var XLSX = require('xlsx');
 
 var {logger} = require('./logger');
 
@@ -118,21 +118,21 @@ class utils {
      * @returns rowcount 
      * @example utils.getrowcountfromExcel("D:\\testexcel.xlsx", "sheet1");
      */
-    async getrowcountfromExcel(filepath, sheetname) {
-        var rowcount = 0;
-        try {
-            var wb = XLSX.readFile(filepath);
-            var sh = wb.Sheets[sheetname];
-            var data = XLSX.utils.sheet_to_json(sh);
-            rowcount = data.length;
-            await this.log.info("get rowcount value " + rowcount);
-        }
-        catch (err) {
-            await this.log.warn(err);
-            rowcount = 0;
-        }
-        return rowcount;
-    }
+    // async getrowcountfromExcel(filepath, sheetname) {
+    //     var rowcount = 0;
+    //     try {
+    //         var wb = XLSX.readFile(filepath);
+    //         var sh = wb.Sheets[sheetname];
+    //         var data = XLSX.utils.sheet_to_json(sh);
+    //         rowcount = data.length;
+    //         await this.log.info("get rowcount value " + rowcount);
+    //     }
+    //     catch (err) {
+    //         await this.log.warn(err);
+    //         rowcount = 0;
+    //     }
+    //     return rowcount;
+    // }
 
     /**
      * @async returns cell value from the excel file for specific row no and column name
@@ -142,19 +142,19 @@ class utils {
      * @returns cellValue
      * @example utils.getCellValueFromExcel("D:\\testexcel.xlsx", "Sheet1", "C5");
      */
-    async getCellValueFromExcel(filepath, sheetname, cellReference) {
-        try {
-            var wb = XLSX.readFile(filepath);
-            var sh = wb.Sheets[sheetname];
-            var cellValue = (sh[cellReference] ? sh[cellReference].w : "");
-            await this.log.info(`Cell value for [${cellReference}] is ${cellValue}`);
-        }
-        catch (err) {
-            await this.log.warn(err);
-            cellValue = "";
-        }
-        return cellValue;
-    }
+    // async getCellValueFromExcel(filepath, sheetname, cellReference) {
+    //     try {
+    //         var wb = XLSX.readFile(filepath);
+    //         var sh = wb.Sheets[sheetname];
+    //         var cellValue = (sh[cellReference] ? sh[cellReference].w : "");
+    //         await this.log.info(`Cell value for [${cellReference}] is ${cellValue}`);
+    //     }
+    //     catch (err) {
+    //         await this.log.warn(err);
+    //         cellValue = "";
+    //     }
+    //     return cellValue;
+    // }
 
     /**
      * @async sets cell value into the excel file for specific row no(which is already existing) and column name. This method will not set data in a new row
@@ -165,17 +165,17 @@ class utils {
      * @returns none
      * @example utils.setCellValueIntoExcel("D:\\testexcel.xlsx", "sheet1", "C5", "dataval");
      */
-    async setCellValueIntoExcel(filepath, sheetname, cellReference, datatoinsert) {
-        try {
-            var wb = XLSX.readFile(filepath);
-            var sh = wb.Sheets[sheetname];
-            XLSX.utils.sheet_add_aoa(sh, [[datatoinsert]], { origin: cellReference });
-            XLSX.writeFile(wb, filepath);
-        }
-        catch (err) {
-            await this.log.warn(err);
-        }
-    }
+    // async setCellValueIntoExcel(filepath, sheetname, cellReference, datatoinsert) {
+    //     try {
+    //         var wb = XLSX.readFile(filepath);
+    //         var sh = wb.Sheets[sheetname];
+    //         XLSX.utils.sheet_add_aoa(sh, [[datatoinsert]], { origin: cellReference });
+    //         XLSX.writeFile(wb, filepath);
+    //     }
+    //     catch (err) {
+    //         await this.log.warn(err);
+    //     }
+    // }
 
     /**
      * @async converts workbook from xls format to xlsx format. It will take input workbook in xls format and create a new workbook with the same name in xlsx format in the same location.
@@ -183,26 +183,26 @@ class utils {
      * @returns It will return a file path with xlsx extension.
      * @example utils.convertXlsToXlsx("D:\\testexcel.xls");
      */
-    async convertXlsToXlsx(filepath) {
-        try {
-            var xlsxfilepath = filepath.replace(".xls", ".xlsx")
-            var newWB, newWS;
-            var wb = XLSX.readFile(filepath, { cellText: false, cellDates: true });
-            newWB = XLSX.utils.book_new();
-            for (let i = 0, l = wb.SheetNames.length; i < l; i += 1) {
-                var sheetName = wb.SheetNames[i];
-                await this.log.info(sheetName);
-                newWS = wb.Sheets[sheetName], { raw: false };
-                XLSX.utils.book_append_sheet(newWB, newWS, sheetName);
-                XLSX.writeFile(newWB, xlsxfilepath);
-            }
-        }
-        catch (err) {
-            await this.log.warn(err);
-        }
-        return (xlsxfilepath);
+    // async convertXlsToXlsx(filepath) {
+    //     try {
+    //         var xlsxfilepath = filepath.replace(".xls", ".xlsx")
+    //         var newWB, newWS;
+    //         var wb = XLSX.readFile(filepath, { cellText: false, cellDates: true });
+    //         newWB = XLSX.utils.book_new();
+    //         for (let i = 0, l = wb.SheetNames.length; i < l; i += 1) {
+    //             var sheetName = wb.SheetNames[i];
+    //             await this.log.info(sheetName);
+    //             newWS = wb.Sheets[sheetName], { raw: false };
+    //             XLSX.utils.book_append_sheet(newWB, newWS, sheetName);
+    //             XLSX.writeFile(newWB, xlsxfilepath);
+    //         }
+    //     }
+    //     catch (err) {
+    //         await this.log.warn(err);
+    //     }
+    //     return (xlsxfilepath);
 
-    }
+    // }
 
     /**
      * @async add data into the excel in a new row and if the column name in the data is not present in the excel,it will craete a new column at the end and insert the data.
@@ -213,29 +213,29 @@ class utils {
      * @example var data = [{ column1: "abc", Header2: "kdch" }, { Header1: "a" },{Header:"ncjwk"}];
      * utils.addNewRowOrColumnInExcel("D:\\testexcel.xlsx", "sheet1", 1, data);
      */
-    async addNewRowOrColumnInExcel(filepath, sheetname, data) {
-        try {
-            var flag = false;
-            let worksheets = {};
-            const wb = XLSX.readFile(filepath, { cellText: false, cellDates: true });
-            const sh = wb.SheetNames;
-            for (const sheetName of sh) {
-                if (sheetName == sheetname) {
-                    worksheets[sheetname] = XLSX.utils.sheet_to_json(wb.Sheets[sheetName], { raw: false, defval: "" });
-                    for (var i = 0; i < data.length; i++) {
-                        worksheets[sheetname].push(data[i]);
-                    }
-                } else {
-                    continue;
-                }
-            }
+    // async addNewRowOrColumnInExcel(filepath, sheetname, data) {
+    //     try {
+    //         var flag = false;
+    //         let worksheets = {};
+    //         const wb = XLSX.readFile(filepath, { cellText: false, cellDates: true });
+    //         const sh = wb.SheetNames;
+    //         for (const sheetName of sh) {
+    //             if (sheetName == sheetname) {
+    //                 worksheets[sheetname] = XLSX.utils.sheet_to_json(wb.Sheets[sheetName], { raw: false, defval: "" });
+    //                 for (var i = 0; i < data.length; i++) {
+    //                     worksheets[sheetname].push(data[i]);
+    //                 }
+    //             } else {
+    //                 continue;
+    //             }
+    //         }
 
-            XLSX.utils.sheet_add_json(wb.Sheets[sheetname], worksheets[sheetname]);
-            XLSX.writeFile(wb, filepath);
-        } catch (err) {
-            await this.log.warn(err);
-        }
-    }
+    //         XLSX.utils.sheet_add_json(wb.Sheets[sheetname], worksheets[sheetname]);
+    //         XLSX.writeFile(wb, filepath);
+    //     } catch (err) {
+    //         await this.log.warn(err);
+    //     }
+    // }
 
     /**
      * @async get cell value from the excel file for specific row number and and column header. 
@@ -246,28 +246,28 @@ class utils {
      * @returns return cellValue;
      * @example utils.getCellValueFromExcelUsingColumnHeaderAndRowNumber("D:\\testexcel.xlsx", "sheet1", 2, "Column1");
      */
-    async getCellValueFromExcelUsingColumnHeaderAndRowNumber(filepath, sheetname, rownum, colname) {
-        var cellValue;
-        try {
-            if (rownum > 1) {
-                var wb = XLSX.readFile(filepath, { cellText: false, cellDates: true });
-                var sh = wb.Sheets[sheetname];
-                var data = XLSX.utils.sheet_to_json(sh, { raw: false, defval: "" });
-                cellValue = data[(rownum - 2)][colname];
-                return cellValue;
-            }
-            else {
-                await this.log.info("Please specify correct excel body row number and column header name to get the data.");
-                cellValue = "";
-            }
-        }
-        catch (err) {
-            await this.log.warn(err);
-            await this.log.warn("Please check whether correct row number and column header name provided.The row number should be in the size of the excel");
+    // async getCellValueFromExcelUsingColumnHeaderAndRowNumber(filepath, sheetname, rownum, colname) {
+    //     var cellValue;
+    //     try {
+    //         if (rownum > 1) {
+    //             var wb = XLSX.readFile(filepath, { cellText: false, cellDates: true });
+    //             var sh = wb.Sheets[sheetname];
+    //             var data = XLSX.utils.sheet_to_json(sh, { raw: false, defval: "" });
+    //             cellValue = data[(rownum - 2)][colname];
+    //             return cellValue;
+    //         }
+    //         else {
+    //             await this.log.info("Please specify correct excel body row number and column header name to get the data.");
+    //             cellValue = "";
+    //         }
+    //     }
+    //     catch (err) {
+    //         await this.log.warn(err);
+    //         await this.log.warn("Please check whether correct row number and column header name provided.The row number should be in the size of the excel");
 
-        }
-        return cellValue;
-    }
+    //     }
+    //     return cellValue;
+    // }
 
     /**
      * @async sets cell value into the excel file for specific row no(which is already existing) and column name. This method will not set data in a new row
@@ -279,42 +279,42 @@ class utils {
      * @returns none
      * @example utils.setCellValueIntoExcelUsingColumnHeaderAndRowNumber("D:\\testexcel.xlsx", "sheet1", 1, "Column1", "dataval");
      */
-     async setCellValueIntoExcelUsingColumnHeaderAndRowNumber(filepath, sheetname, rownum, colname, datatoinsert) {
-        try {
-            var count = 0, rowno = rownum, colname = colname, value;
-            const header = [];
-            var wb = XLSX.readFile(filepath, { cellText: false, cellDates: true });
-            var sh = wb.Sheets[sheetname];
-            const columnCount = XLSX.utils.decode_range(sh['!ref']).e.c + 1;
-            for (let i = 0; i < columnCount; ++i) {
-                header[i] = sh[`${XLSX.utils.encode_col(i)}1`];
-            }
-            for (let i = 0; i < header.length; i++) {
-                if (header[i].v == colname) {
-                    count++;
-                }
-            }
-            if (count == 1) {
-                var data = XLSX.utils.sheet_to_json(sh, { raw: false, defval: "" });
-                value = data[(rowno - 1)][colname];
-                //await this.log.info(value);
+    //  async setCellValueIntoExcelUsingColumnHeaderAndRowNumber(filepath, sheetname, rownum, colname, datatoinsert) {
+    //     try {
+    //         var count = 0, rowno = rownum, colname = colname, value;
+    //         const header = [];
+    //         var wb = XLSX.readFile(filepath, { cellText: false, cellDates: true });
+    //         var sh = wb.Sheets[sheetname];
+    //         const columnCount = XLSX.utils.decode_range(sh['!ref']).e.c + 1;
+    //         for (let i = 0; i < columnCount; ++i) {
+    //             header[i] = sh[`${XLSX.utils.encode_col(i)}1`];
+    //         }
+    //         for (let i = 0; i < header.length; i++) {
+    //             if (header[i].v == colname) {
+    //                 count++;
+    //             }
+    //         }
+    //         if (count == 1) {
+    //             var data = XLSX.utils.sheet_to_json(sh, { raw: false, defval: "" });
+    //             value = data[(rowno - 1)][colname];
+    //             //await this.log.info(value);
 
-                data[(rowno - 1)][colname] = datatoinsert;
-                //await this.log.info(data);
-                XLSX.utils.sheet_add_json(sh, data, {
-                    //skipHeader: true,
-                    // append to bottom of worksheet starting on first column
-                });
-                XLSX.writeFile(wb, filepath);
-            }
-            else {
-                await this.log.info("No such column " + colname + " present in excel");
-            }
-        }
-        catch (err) {
-            await this.log.warn(err);
-        }
-    }
+    //             data[(rowno - 1)][colname] = datatoinsert;
+    //             //await this.log.info(data);
+    //             XLSX.utils.sheet_add_json(sh, data, {
+    //                 //skipHeader: true,
+    //                 // append to bottom of worksheet starting on first column
+    //             });
+    //             XLSX.writeFile(wb, filepath);
+    //         }
+    //         else {
+    //             await this.log.info("No such column " + colname + " present in excel");
+    //         }
+    //     }
+    //     catch (err) {
+    //         await this.log.warn(err);
+    //     }
+    // }
 
     /**
      * @async Send Mail

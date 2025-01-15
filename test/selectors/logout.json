@@ -1,4 +1,0 @@
-{
-  "pageUrl": "/logout",
-  "loginButton": "//button[@id='submitButton']"
-}

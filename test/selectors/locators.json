@@ -1,0 +1,49 @@
+{
+  "login": {
+    "inputUsername": "//input[@aria-label='Email']",
+    "visiblePassword": "//*[@id='flt-semantic-node-14']",
+    "inputPassword": "//flt-text-editing-host//form[4]//*[@id='current-password']",
+    "btnSubmit": "button[type='submit']",
+    "btnSignIn": "//*[contains(text(),'Sign In')]",
+    "btnProfile": "//span[text()='Profile']",
+    "btnCareerPlanning": "//*[text()='Career Planning']",
+    "btnReferAndEarn": "//*[text()='Refer and Earn']",
+    "btnSearch": "//*[text()='Search']",
+    "btnBlog": "//*[text()='Search']/following-sibling::flt-semantics[text()='Blog']",
+    "btnActivityFeed": "//span[text()='Activity Feed']",
+    "btnJobs": "//span[text()='Jobs']",
+    "btnNotifications": "//span[text()='Notifications']",
+    "btnForBusinesses": "//span[text()='For Businesses']",
+    "btnSignout": "//*[text()='Sign out']",
+    "hiddenAccessibilityButton": "flt-semantics-placeholder"
+  },
+  "profile": {
+    "btnProfile": "//span[text()='Profile']",
+    "btnExperience": "//span[text()='Experience']",
+    "btnAddExperience": "//*[@id='flt-semantic-node-34']",
+    "dropdownSelectRole": "//*[text()='Please select role*']",
+    "optionSelectRole": "//*[text()='HHA']",
+    "checkboxBusinessUnit": "//*[@aria-label='Home Care']",
+    "inputEmployer": "//*[@aria-label='Employer*']",
+    "btnStartDate": "//*[text()='Start Date']",
+    "calendarStartDate": "//*[contains(text(),'December 3, 2024')]",
+    "btnOK": "//*[text()='OK']",
+    "btnSave": "//*[text()='Save']",
+    "btnOpenToWork": "//*[text()='Open to Work?']"
+  },
+  "basicInfo":{
+    "btnEditProfile": "//flt-semantics[text()='Profile']",
+    "inputFirstName": "//input[@aria-label='First Name']",
+    "inputLastName": "//input[@aria-label='Last Name']",
+    "inputAbout": "//*[@aria-label='About']",
+    "dropdownRole": "//flt-semantics[@id='flt-semantic-node-12']",
+    "optionDynamicSelector": "//flt-semantics[text()='dynamicValue']",
+    "dropdownSpeciality": "//flt-semantics[@id='flt-semantic-node-105']",
+    "dropdownCountry": "//flt-semantics[@id='flt-semantic-node-14']",
+    "dropdownState": "//flt-semantics[@id='flt-semantic-node-15']",
+    "inputZipCode": "//input[@aria-label='Zip-Code']",
+    "inputPhoneNumber": "//input[@aria-label='Phone Number']",
+    "btnsave": "//*[text()='save']",
+    "btncancel": "//*[text()='cancel']"
+  }
+}

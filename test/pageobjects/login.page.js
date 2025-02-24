@@ -10,18 +10,15 @@ class LoginPage extends Page {
     get visiblePassword() { return $(locators.login.visiblePassword); }
     get inputPassword() { return $(locators.login.inputPassword); }
     get btnSubmit() { return $(locators.login.btnSubmit); }
-    get btnSignIn() { return $(locators.login.btnSignIn); }
-    get btnProfile() { return $(locators.login.btnProfile); }
-    get btnCareerPlanning() { return $(locators.login.btnCareerPlanning); }
-    get btnReferAndEarn() { return $(locators.login.btnReferAndEarn); }
-    get btnSearch() { return $(locators.login.btnSearch); }
-    get btnBlog() { return $(locators.login.btnBlog); }
-    get btnActivityFeed() { return $(locators.login.btnActivityFeed); }
-    get btnJobs() { return $(locators.login.btnJobs); }
-    get btnNotifications() { return $(locators.login.btnNotifications); }
-    get btnForBusinesses() { return $(locators.login.btnForBusinesses); }
-    get btnSignout() { return $(locators.login.btnSignout); }
-    get hiddenAccessibilityButton() { return $(locators.login.hiddenAccessibilityButton); }
+    get btnSignInWithGoogle() { return $(locators.login.btnSignInWithGoogle); }
+    get btnSignUp() { return $(locators.login.btnSignUp); }
+    get textLoginToContinue() { return $(locators.login.textLoginToContinue); }
+    get textLoginSubText() { return $(locators.login.textLoginSubText); }
+    get textEmailAddress() { return $(locators.login.textEmailAddress); }
+    get textPassword() { return $(locators.login.textPassword); }
+    get textOr() { return $(locators.login.textOr); }
+
+
 
     /**
      * Function to enable accessibility by clicking the hidden button
@@ -35,7 +32,7 @@ class LoginPage extends Page {
         await accessibilityButton.waitForExist({ timeout: 5000 });
 
         await browser.execute((el) => el.click(), accessibilityButton);
-        console.log('Accessibility enabled');
+        await this.log.info('Accessibility enabled');
     }
 
     async login(username, password) {
@@ -74,6 +71,31 @@ class LoginPage extends Page {
         await expect(this.btnNotifications).toBeEnabled({ message: "Notifications button must be enabled"});
         await expect(this.btnForBusinesses).toBeEnabled({ message: "ForBussinesses button must be enabled"});
     }
+
+    async validateLoginPageFields(){
+        await expect(LoginPage.inputUsername).toBeDisplayed();
+        await this.log.info('Verified the Email address field is displayed.');
+        await expect(LoginPage.inputPassword).toBeDisplayed();
+        await this.log.info('Verified the Password field is displayed.');
+        await expect(LoginPage.btnSubmit).toBeDisplayed();
+        await this.log.info('Verified the Submit button is displayed.');
+        await expect(LoginPage.btnSignInWithGoogle).toBeDisplayed();
+        await this.log.info('Verified the Sign in with Google button is displayed.');
+        await expect(LoginPage.btnSignUp).toBeDisplayed();
+        await this.log.info('Verified the Sign Up Now button is displayed.');
+        await expect(LoginPage.textLoginToContinue).toBeDisplayed();
+        await this.log.info('Verified the Login to continue text is displayed.');
+        await expect(LoginPage.textLoginSubText).toBeDisplayed();
+        await this.log.info('Verified the subtext under login is displayed.');
+        await expect(LoginPage.textEmailAddress).toBeDisplayed();
+        await this.log.info('Verified the Email address label is displayed.');
+        await expect(LoginPage.textPassword).toBeDisplayed();
+        await this.log.info('Verified the Password label is displayed.');
+        await expect(LoginPage.textOr).toBeDisplayed();
+        await this.log.info('Verified the OR text is displayed.');
+    }
+
+    
 
     async logout() {
         await this.action.click(this.btnSignout);

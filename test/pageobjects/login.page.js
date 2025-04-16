@@ -39,7 +39,7 @@ class LoginPage extends Page {
         await accessibilityButton.waitForExist({ timeout: 10000 });
 
         await browser.execute((el) => el.click(), accessibilityButton);
-        console.log('Accessibility enabled');
+        await this.log.info('Accessibility enabled');
     }
 
     async login(username, password) {
@@ -94,6 +94,31 @@ class LoginPage extends Page {
         await expect(this.btnNotifications).toBeEnabled({ message: "Notifications button must be enabled"});
         await expect(this.btnForBusinesses).toBeEnabled({ message: "ForBussinesses button must be enabled"});
     }
+
+    async validateLoginPageFields(){
+        await expect(LoginPage.inputUsername).toBeDisplayed();
+        await this.log.info('Verified the Email address field is displayed.');
+        await expect(LoginPage.inputPassword).toBeDisplayed();
+        await this.log.info('Verified the Password field is displayed.');
+        await expect(LoginPage.btnSubmit).toBeDisplayed();
+        await this.log.info('Verified the Submit button is displayed.');
+        await expect(LoginPage.btnSignInWithGoogle).toBeDisplayed();
+        await this.log.info('Verified the Sign in with Google button is displayed.');
+        await expect(LoginPage.btnSignUp).toBeDisplayed();
+        await this.log.info('Verified the Sign Up Now button is displayed.');
+        await expect(LoginPage.textLoginToContinue).toBeDisplayed();
+        await this.log.info('Verified the Login to continue text is displayed.');
+        await expect(LoginPage.textLoginSubText).toBeDisplayed();
+        await this.log.info('Verified the subtext under login is displayed.');
+        await expect(LoginPage.textEmailAddress).toBeDisplayed();
+        await this.log.info('Verified the Email address label is displayed.');
+        await expect(LoginPage.textPassword).toBeDisplayed();
+        await this.log.info('Verified the Password label is displayed.');
+        await expect(LoginPage.textOr).toBeDisplayed();
+        await this.log.info('Verified the OR text is displayed.');
+    }
+
+    
 
     async logout() {
         await this.action.click(this.btnSignout);

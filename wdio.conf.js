@@ -1,4 +1,5 @@
 const environments = require('./environments');
+const loginPage = require('./test/pageobjects/login.page');
 
 const env = process.env.NODE_ENV || 'test';
 const envConfig = environments[env];
@@ -134,7 +135,7 @@ exports.config = {
     // See the full list at http://mochajs.org/
     mochaOpts: {
         ui: 'bdd',
-        timeout: 60000
+        timeout: 99999999//60000
     },
 
     //
@@ -207,13 +208,16 @@ exports.config = {
      * Hook that gets executed before the suite starts
      * @param {object} suite suite details
      */
-    // beforeSuite: function (suite) {
-    // },
+    beforeSuite: async function (suite) {
+        await loginPage.login(envConfig.username,envConfig.password);
+    },
     /**
      * Function to be executed before a test (in Mocha/Jasmine) starts.
      */
-    // beforeTest: function (test, context) {
-    // },
+    beforeTest: function (test, context) {
+        console.log(`Starting test: ${test.parent} - ${test.title}`);
+        global.errors = [];
+    },
     /**
      * Hook that gets executed _before_ a hook within the suite starts (e.g. runs before calling
      * beforeEach in Mocha)

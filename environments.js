@@ -1,9 +1,9 @@
 // environments.js
 module.exports = {
     test: {
-        baseUrl: 'https://elevate-healthforce-f6h23.flutterflow.app/landingPage',
+        baseUrl: 'https://elevate-healthforce-f6h23.flutterflow.app',
         username: 'arunkumarkondamedi@gmail.com',
-        password: '1qaz1qaz'
+        password: '2wsx2wsx'
     },
     prod: {
         baseUrl: 'https://careslink.com',

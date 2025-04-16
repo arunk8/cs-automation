@@ -136,6 +136,15 @@ class webActionsAPI {
         await this.log.info(`Set value: ${value} to ${typeof locator === 'string' ? locator : 'provided element'}`);
     }
 
+    async setFlutterTextInput(locator, value) {
+        const input = typeof locator === 'string' ? await $(locator) : locator;
+        // const input = await $(locator);
+        await input.click();
+        await browser.pause(300);
+        await browser.keys(['Control', 'a']);
+        await browser.keys('Backspace');
+        await browser.keys(value);
+    }
     /**
      * @async Scroll into view and click on an element
      * @param locator The WebdriverIO locator or selector of the object
@@ -549,22 +558,23 @@ class webActionsAPI {
 
     /**
      * @async Check if an element is displayed within a specified timeout.
-     * @param {string} locator - The WebdriverIO locator or selector of the element.
+     * @param element - The WebdriverIO element.
      * @param {number} timeout - Timeout in milliseconds to wait for the element to be displayed.
      * @returns {Promise<boolean>} - True if the element is displayed within the timeout, otherwise false.
      * @example const isVisible = await webActionsAPI.isDisplayed('#elementId', 5000);
      */
-    async isDisplayed(locator, timeout = 5000) {
+    async isDisplayed(element, timeout = 5000) {
         try {
-            const element = await $(locator);
-            
+            // const element = await $(locator);
+            await element.waitForExist({timeout});
+            await element.waitForDisplayed({timeout});
             // Wait for the element to be displayed within the timeout
-            const isDisplayed = await element.waitForDisplayed({ timeout });
+            const isDisplayed = await element.isDisplayed();
             
-            await this.log.info(`Element ${locator} is displayed: ${isDisplayed}`);
+            await this.log.info(`Element ${await element.selector} is displayed: ${isDisplayed}`);
             return isDisplayed;
         } catch (error) {
-            await this.log.error(`Failed to check if element is displayed within timeout: ${error.message}`);
+            await this.log.info(`Element: ${await element.selector} is NOT displayed within timeout: ${error.message}`);
             return false;
         }
     }
@@ -702,12 +712,12 @@ class webActionsAPI {
      */
     async waitForElementToBeInVisible(locator, timeout = 5000) {
         try {
-            const element = await $(locator);
+            const element = typeof locator === 'string' ? await $(locator) : locator;
             const isInvisible = await element.waitForDisplayed({ timeout, reverse: true });
-            await this.log.info(`Element ${locator} is invisible: ${isInvisible}`);
+            await this.log.info(`Element ${await element.selector} is invisible: ${isInvisible}`);
             return isInvisible;
         } catch (error) {
-            await this.log.error(`Failed to wait for element to be invisible: ${error.message}`);
+            await this.log.info(`Failed to wait for element ${await element.selector} to be invisible: ${error.message}`);
             return false;
         }
     }

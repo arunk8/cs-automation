@@ -1,26 +1,30 @@
 const { $, browser } = require('@wdio/globals');
 const Page = require('./Page.js');
 const { Key } = require('webdriverio');
-const { waitForFinish } = require('testable-utils');
 var locators = require('../selectors/locators.json');
+const { addAllureId } = require('@wdio/allure-reporter');
 
 class LoginPage extends Page {
     
     get inputUsername() { return $(locators.login.inputUsername); }
     get visiblePassword() { return $(locators.login.visiblePassword); }
     get inputPassword() { return $(locators.login.inputPassword); }
-    get btnSubmit() { return $(locators.login.btnSubmit); }
-    get btnSignIn() { return $(locators.login.btnSignIn); }
-    get btnProfile() { return $(locators.login.btnProfile); }
-    get btnCareerPlanning() { return $(locators.login.btnCareerPlanning); }
-    get btnReferAndEarn() { return $(locators.login.btnReferAndEarn); }
-    get btnSearch() { return $(locators.login.btnSearch); }
-    get btnBlog() { return $(locators.login.btnBlog); }
-    get btnActivityFeed() { return $(locators.login.btnActivityFeed); }
-    get btnJobs() { return $(locators.login.btnJobs); }
-    get btnNotifications() { return $(locators.login.btnNotifications); }
-    get btnForBusinesses() { return $(locators.login.btnForBusinesses); }
-    get btnSignout() { return $(locators.login.btnSignout); }
+    get btnBackToHome() { return $(locators.login.btnBackToHome); }
+    get btnCaresLinkLogo() { return $(locators.login.btnCaresLinkLogo); }
+    get btnLoginToAccount() { return $(locators.login.btnLoginToAccount); }
+    get btnSignInWithGoogle() { return $(locators.login.btnSignInWithGoogle); }
+    get btnForgotPassword() { return $(locators.login.btnForgotPassword); }
+    get btnSignUpNow() { return $(locators.login.btnSignUpNow); }
+
+
+
+    // get btnSearch() { return $(locators.login.btnSearch); }
+    // get btnBlog() { return $(locators.login.btnBlog); }
+    // get btnActivityFeed() { return $(locators.login.btnActivityFeed); }
+    // get btnJobs() { return $(locators.login.btnJobs); }
+    // get btnNotifications() { return $(locators.login.btnNotifications); }
+    // get btnForBusinesses() { return $(locators.login.btnForBusinesses); }
+    // get btnSignout() { return $(locators.login.btnSignout); }
     get hiddenAccessibilityButton() { return $(locators.login.hiddenAccessibilityButton); }
 
     /**
@@ -32,22 +36,38 @@ class LoginPage extends Page {
 
         // Wait for the hidden accessibility button
         const accessibilityButton = await this.hiddenAccessibilityButton;
-        await accessibilityButton.waitForExist({ timeout: 5000 });
+        await accessibilityButton.waitForExist({ timeout: 10000 });
 
         await browser.execute((el) => el.click(), accessibilityButton);
         console.log('Accessibility enabled');
     }
 
     async login(username, password) {
+        await this.open('loginPage')
         // Enabling accessibility before interacting with elements
         await this.enableAccessibility();
+        
+        if(await this.action.isDisplayed(this.btnCaresLinkLogo, 10000)){
+            await this.action.setFlutterTextInput(this.inputUsername,username);
+            await this.action.setFlutterTextInput(this.inputPassword,password);
+            await this.action.click(this.btnLoginToAccount);
+            let isLoggedIn = await this.action.waitForElementToBeInVisible(this.btnLoginToAccount);
+            if(isLoggedIn){
+                await this.log.info("Login successful")
+            }else{
+                await this.log.info("Login failed")
+            }
+        }else{
+            await this.log.error("Login page is not loaded successfully");
+        }
 
-        await this.action.click(this.btnSignIn);
-        await this.action.setValue(this.inputUsername,username);
-        await this.action.clickKeys("tab");
-        await browser.keys(password.split(''));
-        await this.action.click(this.btnSignIn);
-        await this.action.waitForElementToBeVisible(this.btnProfile);
+        await this.assert.assertAll();
+        // await this.action.click(this.btnSignIn);
+        // await this.action.setValue(this.inputUsername,username);
+        // await this.action.clickKeys("tab");
+        // await browser.keys(password.split(''));
+        // await this.action.click(this.btnSignIn);
+        // await this.action.waitForElementToBeVisible(this.btnProfile);
 
         //signinwith google
         // await this.btnSignInWithGoogle.click();

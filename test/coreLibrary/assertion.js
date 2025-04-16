@@ -25,11 +25,18 @@ class assertion {
             await this.log.error(message+"\n error due to "+err);
             this.overallstatus = false;
             global.assertStatus=false;
+            global.errors.push(`${message}: ${err.message}`)
             await this.base.takeScreenshot("error");
         }
     }
     async equal(actual, expected, message) {
         chai.assert.equal(actual, expected, message);
+    }
+
+    async assertAll(){
+        if(global.errors.length > 0){
+            throw new Error(`soft assert failures: \n${global.errors.join("\n")}`);
+        }
     }
 }
 exports.assertion = assertion;

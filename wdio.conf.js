@@ -209,7 +209,7 @@ exports.config = {
      * @param {object} suite suite details
      */
     beforeSuite: async function (suite) {
-        await loginPage.login(envConfig.username,envConfig.password);
+        // await loginPage.login(envConfig.username,envConfig.password);
     },
     /**
      * Function to be executed before a test (in Mocha/Jasmine) starts.

@@ -11,8 +11,23 @@
     "btnSignUpNow": "//span[contains(text(),'New User?')]",
     "hiddenAccessibilityButton": "flt-semantics-placeholder"
   },
-  "profile": {
+  "header": {
     "btnProfile": "//span[text()='Profile']",
+    "btnAlerts": "//span[normalize-space()='Alerts']",
+    "btnGoGlobal": "//span[normalize-space()='GoGlobal']",
+    "btnLearnings": "//span[normalize-space()='Learnings']",
+    "btnJobs": "//span[text()='Jobs']",
+    "btnFeeds": "//span[text()='Feeds']",
+    "btnSearch": "//span[normalize-space()='Jobs, People, AI Agents and more...']"
+  },
+  "accountSetup":{
+    "inputEmailAddress": "//input[@type='text']"
+
+  },
+
+  "profile": {
+    "btnEditProfile": "//flt-semantics[text()='Sign out']/following-sibling::flt-semantics[1]",
+    
     "btnExperience": "//span[text()='Experience']",
     "btnAddExperience": "//*[@id='flt-semantic-node-34']",
     "dropdownSelectRole": "//*[text()='Please select role*']",

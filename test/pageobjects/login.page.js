@@ -1,31 +1,35 @@
 const { $, browser } = require('@wdio/globals');
 const Page = require('./Page.js');
 const { Key } = require('webdriverio');
-var locators = require('../selectors/locators.json');
+var loginSelectors = require('../selectors/loginSelectors.js');
 const { addAllureId } = require('@wdio/allure-reporter');
 
 class LoginPage extends Page {
     
-    get inputUsername() { return $(locators.login.inputUsername); }
-    get visiblePassword() { return $(locators.login.visiblePassword); }
-    get inputPassword() { return $(locators.login.inputPassword); }
-    get btnBackToHome() { return $(locators.login.btnBackToHome); }
-    get btnCaresLinkLogo() { return $(locators.login.btnCaresLinkLogo); }
-    get btnLoginToAccount() { return $(locators.login.btnLoginToAccount); }
-    get btnSignInWithGoogle() { return $(locators.login.btnSignInWithGoogle); }
-    get btnForgotPassword() { return $(locators.login.btnForgotPassword); }
-    get btnSignUpNow() { return $(locators.login.btnSignUpNow); }
+    get inputUsername() { return $(loginSelectors.login.inputUsername); }
+    get visiblePassword() { return $(loginSelectors.login.visiblePassword); }
+    get inputPassword() { return $(loginSelectors.login.inputPassword); }
+    get btnBackToHome() { return $(loginSelectors.login.btnBackToHome); }
+    get btnCaresLinkLogo() { return $(loginSelectors.login.btnCaresLinkLogo); }
+    get btnLoginToAccount() { return $(loginSelectors.login.btnLoginToAccount); }
+    get btnSignInWithGoogle() { return $(loginSelectors.login.btnSignInWithGoogle); }
+    get btnForgotPassword() { return $(loginSelectors.login.btnForgotPassword); }
+    get btnSignUpNow() { return $(loginSelectors.login.btnSignUpNow); }
 
 
+    get inputEmailAddress() { return $(loginSelectors.accountSetup.inputEmailAddress); }
+    get inputPasswordAccountSetup() { return $(loginSelectors.accountSetup.inputPassword); }
+    get inputConfirmPassword() { return $(loginSelectors.accountSetup.inputConfirmPassword); }
+    get btnCreateAccount() { return $(loginSelectors.accountSetup.btnCreateAccount); }
 
-    // get btnSearch() { return $(locators.login.btnSearch); }
-    // get btnBlog() { return $(locators.login.btnBlog); }
-    // get btnActivityFeed() { return $(locators.login.btnActivityFeed); }
-    // get btnJobs() { return $(locators.login.btnJobs); }
-    // get btnNotifications() { return $(locators.login.btnNotifications); }
-    // get btnForBusinesses() { return $(locators.login.btnForBusinesses); }
-    // get btnSignout() { return $(locators.login.btnSignout); }
-    get hiddenAccessibilityButton() { return $(locators.login.hiddenAccessibilityButton); }
+    // get btnSearch() { return $(loginSelectors.login.btnSearch); }
+    // get btnBlog() { return $(loginSelectors.login.btnBlog); }
+    // get btnActivityFeed() { return $(loginSelectors.login.btnActivityFeed); }
+    // get btnJobs() { return $(loginSelectors.login.btnJobs); }
+    // get btnNotifications() { return $(loginSelectors.login.btnNotifications); }
+    // get btnForBusinesses() { return $(loginSelectors.login.btnForBusinesses); }
+    // get btnSignout() { return $(loginSelectors.login.btnSignout); }
+    get hiddenAccessibilityButton() { return $(loginSelectors.login.hiddenAccessibilityButton); }
 
     /**
      * Function to enable accessibility by clicking the hidden button
@@ -118,8 +122,34 @@ class LoginPage extends Page {
         await this.log.info('Verified the OR text is displayed.');
     }
 
-    
+    async createNewUser(emailAddress, password) {
+        await this.open('account-setup')
+        // Enabling accessibility before interacting with elements
+        await this.enableAccessibility();
+        let isAccountsetupLoaded = await this.action.isDisplayed(this.inputEmailAddress);
+        if(isAccountsetupLoaded){
+            await this.action.setFlutterTextInput(this.inputEmailAddress, emailAddress);
+            await this.action.wait(1);
+            await this.action.setFlutterTextInput(this.inputPassword, password);
+            await this.action.wait(1);
+            await this.action.setFlutterTextInput(this.inputConfirmPassword, password);
+            await this.action.wait(1);
+            await this.action.click(this.btnCreateAccount);
+            await this.action.wait(5);
+        }
+    }
 
+    async generateRandomEmail() {
+        const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+        let username = '';
+        
+        for (let i = 0; i < 10; i++) {
+          username += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+      
+        return username + '@test.com';
+    }
+          
     async logout() {
         await this.action.click(this.btnSignout);
         await this.action.waitForElementToBeInVisible(this.btnProfile);
